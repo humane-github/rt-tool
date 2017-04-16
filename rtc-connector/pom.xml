@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>jp.co.humane.rtc.tool</groupId>
+  <artifactId>rtc-connector</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <!-- 親pom -->
+  <parent>
+    <groupId>jp.co.humane.rtc.tool.parent</groupId>
+    <artifactId>rtc-tool-parent</artifactId>
+    <version>1.0</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <properties>
+    <jar.file.name>rtc-connector</jar.file.name>
+  </properties>
+
+  <!-- リポジトリの参照を追加 -->
+  <repositories>
+    <repository>
+      <id>mvnrepository</id>
+      <name>mvnrepository</name>
+      <url>https://mvnrepository.com/</url>
+    </repository>
+  </repositories>
+
+  <!-- 参照するjarを定義 -->
+  <dependencies>
+
+    <!-- OpenRTM-aist -->
+    <dependency>
+      <groupId>tk.devrt</groupId>
+      <artifactId>openrtm-aist-java</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <!-- Spring Shell -->
+    <dependency>
+      <groupId>org.springframework.shell</groupId>
+      <artifactId>spring-shell</artifactId>
+      <version>1.2.0.RELEASE</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+
+      <!-- fat jarを生成 -->
+      <!--
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <finalName>${jar.file.name}</finalName>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+      </plugin>
+      -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>${jar.file.name}</finalName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>jp.co.humane.rtc.tool.connector.shell.Main</mainClass>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.handlers</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.schemas</resource>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
