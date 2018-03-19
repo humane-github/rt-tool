@@ -57,6 +57,14 @@ public interface NamingServerDao {
     public Map<String, Map<String, String>> getConfigMap();
 
     /**
+     * 設定情報を更新する。
+     * @param rtcName    RTC名。
+     * @param paramName  パラメータ名。
+     * @param value      値。
+     */
+    public void updateConfig(String rtcName, String paramName, String value);
+
+    /**
      * オブジェクト参照のマップを更新する。
      */
     public void reflesh();

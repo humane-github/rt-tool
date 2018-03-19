@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -30,8 +31,10 @@ import RTC.PortProfile;
 import RTC.PortService;
 import RTC.RTObject;
 import RTC.RTObjectHelper;
+import _SDOPackage.ConfigurationSet;
 import _SDOPackage.InterfaceNotImplemented;
 import _SDOPackage.InternalError;
+import _SDOPackage.InvalidParameter;
 import _SDOPackage.NameValue;
 import _SDOPackage.NotAvailable;
 import jp.co.humane.rtc.tool.connector.common.consts.PropertyKey;
@@ -177,6 +180,49 @@ public class NamingServerDaoImpl implements NamingServerDao {
         }
         return configMap;
     }
+
+    /**
+     * 設定情報を更新する。
+     * @param rtcName    RTC名。
+     * @param paramName  パラメータ名。
+     * @param value      値。
+     * @return 成功時はtrue。
+     */
+    public void updateConfig(String rtcName, String paramName, String value) {
+
+        // 指定RTC名が存在しない場合は例外とする
+        if (!rtcMap.containsKey(rtcName)) {
+            throw new RuntimeException("RTC [" + rtcName + "] は存在しません。");
+        }
+
+        try {
+            // 指定パラメータの値を更新する
+            RtcInfo rtc = rtcMap.get(rtcName);
+            RTObject rtObj = rtc.getObjRef();
+            ConfigurationSet confSet = rtObj.get_configuration().get_active_configuration_set();
+            boolean isUpdated = false;
+            for (NameValue nv : confSet.configuration_data) {
+                if (Objects.equals(paramName, nv.name)) {
+                    isUpdated = true;
+                    nv.value.insert_string(value);
+                    break;
+                }
+            }
+
+            // 指定パラメータが存在しない場合は例外とする
+            if (!isUpdated) {
+                throw new RuntimeException("RTC [" + rtcName + "] にパラメータ [" + paramName + "] は存在しません。");
+            }
+
+            // 設定情報を更新する
+            rtObj.get_configuration().set_configuration_set_values(confSet);
+
+        } catch (InvalidParameter | NotAvailable | InternalError | InterfaceNotImplemented ex) {
+            throw new RuntimeException("予期せぬエラーが発生しました。\n" + ex.getMessage());
+        }
+    }
+
+
 
     /**
      * オブジェクト参照のマップを更新する。
