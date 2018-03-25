@@ -65,6 +65,30 @@ public interface NamingServerDao {
     public void updateConfig(String rtcName, String paramName, String value);
 
     /**
+     * 2つのポートを接続する。
+     * @param outRtcName  出力ポートを持つRTC名。
+     * @param outPortName 出力ポート名。
+     * @param inRtcName   入力ポートを持つRTC名。
+     * @param inPortName  入力ポート名。
+     */
+    public void connect(String outRtcName, String outPortName, String inRtcName, String inPortName);
+
+    /**
+     * 2つのポートを切断する。
+     * @param outRtcName  出力ポートを持つRTC名。
+     * @param outPortName 出力ポート名。
+     * @param inRtcName   入力ポートを持つRTC名。
+     * @param inPortName  入力ポート名。
+     */
+    public void disconnect(String outRtcName, String outPortName, String inRtcName, String inPortName);
+
+    /**
+     * RTCをアクティブ化する。
+     * @param rtcName RTC名。
+     */
+    public void activate(String rtcName);
+
+    /**
      * オブジェクト参照のマップを更新する。
      */
     public void reflesh();

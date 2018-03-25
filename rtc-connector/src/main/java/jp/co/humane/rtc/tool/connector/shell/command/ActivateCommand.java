@@ -1,6 +1,3 @@
-/**
- *
- */
 package jp.co.humane.rtc.tool.connector.shell.command;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +8,32 @@ import org.springframework.stereotype.Component;
 
 import jp.co.humane.rtc.tool.connector.common.exceptions.ApplicationException;
 import jp.co.humane.rtc.tool.connector.dao.NamingServerDao;
-import jp.co.humane.rtc.tool.connector.shell.command.arg.ConfigParam;
 import jp.co.humane.rtc.tool.connector.shell.command.arg.RtcParam;
 
 /**
- * configコマンドの処理を定義。
- * @author terada.
+ * activateコマンドの処理を定義。
+ * @author teradakng
  *
  */
 @Component
-public class ConfigCommand  implements CommandMarker {
+public class ActivateCommand implements CommandMarker {
 
     /** ネーミングサーバーDAO */
     @Autowired
     private NamingServerDao dao = null;
 
-    @CliCommand(value = "config", help = "Update RTC Configuration")
+    @CliCommand(value = "activate", help = "Activate RTC")
     public String simple(
-            @CliOption(key = { "rtc" }, mandatory = true, help = "RTC Component", specifiedDefaultValue = "") final RtcParam rtcParam,
-            @CliOption(key = { "param" }, mandatory = true, help = "Configuration Parameter", specifiedDefaultValue = "") final ConfigParam configParam,
-            @CliOption(key = { "value" }, mandatory = true, help = "Configuration Value", specifiedDefaultValue = "") final String value
+            @CliOption(key = { "rtc" }, mandatory = true, help = "RTC Component", specifiedDefaultValue = "") final RtcParam rtcParam
             ) {
 
         // 最新の情報を使用する
         dao.reflesh();
 
-        // 設定の更新を行う
-        String msg = "設定を更新しました。";
+        // アクティブ化を実施
+        String msg = "アクティブ化を行いました。";
         try {
-            dao.updateConfig(rtcParam.getName(), configParam.getName(), value);
+            dao.activate(rtcParam.getName());
         } catch (ApplicationException ex) {
             msg = ex.getMessage();
         }

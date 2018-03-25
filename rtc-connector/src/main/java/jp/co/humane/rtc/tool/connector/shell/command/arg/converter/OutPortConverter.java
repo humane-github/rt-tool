@@ -37,7 +37,8 @@ public class OutPortConverter implements Converter<OutPortParam> {
      */
     @Override
     public boolean supports(Class<?> type, String optionContext) {
-        return OutPortParam.class.isAssignableFrom(type);    }
+        return OutPortParam.class.isAssignableFrom(type);
+    }
 
     /**
      * 文字列からポートパラメータを生成する。

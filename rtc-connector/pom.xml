@@ -16,6 +16,9 @@
 
   <properties>
     <jar.file.name>rtc-connector</jar.file.name>
+    <java.version>1.8</java.version>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
   </properties>
 
   <!-- リポジトリの参照を追加 -->
@@ -43,6 +46,20 @@
       <artifactId>spring-shell</artifactId>
       <version>1.2.0.RELEASE</version>
     </dependency>
+
+    <!-- commons-lang3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.0</version>
+	</dependency>
+
+    <!-- log4j -->
+	<dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+	</dependency>
 
   </dependencies>
 
