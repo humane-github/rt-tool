@@ -8,7 +8,7 @@ package jp.co.humane.rtc.tool.connector.common.consts;
  * @author terada.
  *
  */
-public class PropertyKey {
+public class RtmPropertyKey {
 
     /** ポートタイプのプロパティキー */
     public static final String PORT_TYPE = "port.port_type";

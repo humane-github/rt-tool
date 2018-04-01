@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import org.springframework.shell.Bootstrap;
 
-import jp.co.humane.rtc.tool.connector.RtcConnector;
+import jp.co.humane.rtc.tool.connector.common.consts.SystemPropertyKey;
 
 /**
  * シェルを開始する。
@@ -25,17 +25,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        // TODO:後で消す
-        args = new String[] { "localhost", "2809" };
-
+        // 引数チェック
         if (!checkArg(args)) {
             System.out.println(USAGE);
             return;
         }
 
         // Spring Shell起動時の処理をカスタマイズできないのでシステムプロパティ経由で情報を渡す
-        System.setProperty(RtcConnector.SERVER_NAME, args[0]);
-        System.setProperty(RtcConnector.PORT_NUMBER, args[1]);
+        System.setProperty(SystemPropertyKey.SERVER_NAME, args[0]);
+        System.setProperty(SystemPropertyKey.PORT_NUMBER, args[1]);
 
         // Spring Shellの引数は2個減らす
         String[] newArgs = new String[args.length - 2];

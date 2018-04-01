@@ -42,7 +42,8 @@ import _SDOPackage.InternalError;
 import _SDOPackage.InvalidParameter;
 import _SDOPackage.NameValue;
 import _SDOPackage.NotAvailable;
-import jp.co.humane.rtc.tool.connector.common.consts.PropertyKey;
+import jp.co.humane.rtc.tool.connector.common.consts.RtmPropertyKey;
+import jp.co.humane.rtc.tool.connector.common.consts.SystemPropertyKey;
 import jp.co.humane.rtc.tool.connector.common.enums.ComponentState;
 import jp.co.humane.rtc.tool.connector.common.exceptions.ApplicationException;
 import jp.co.humane.rtc.tool.connector.component.ConnectProfileHolder;
@@ -61,12 +62,6 @@ import jp.go.aist.rtm.RTC.util.ORBUtil;
  */
 @Component
 public class NamingServerDaoImpl implements NamingServerDao {
-
-    /** システムプロパティのキー：サーバー名 */
-    public static final String SERVER_NAME = "rtc.connector.server.name";
-
-    /** システムプロパティのキー：ポート番号 */
-    public static final String PORT_NUMBER = "rtc.connector.port.number";
 
     /** オブジェクト参照の最大値 */
     private static final int MAX_BINDING_SIZE = 100;
@@ -98,8 +93,8 @@ public class NamingServerDaoImpl implements NamingServerDao {
      * @throws Exception 接続に失敗した場合に発生。
      */
     public NamingServerDaoImpl() throws Exception {
-        String server = System.getProperty(SERVER_NAME);
-        String port = System.getProperty(PORT_NUMBER);
+        String server = System.getProperty(SystemPropertyKey.SERVER_NAME);
+        String port = System.getProperty(SystemPropertyKey.PORT_NUMBER);
         orb = ORBUtil.getOrb();
         corbaNaming = new CorbaNaming(orb, server + ":" + port);
     }
@@ -457,12 +452,12 @@ public class NamingServerDaoImpl implements NamingServerDao {
             switch(key) {
 
             // データタイプは文字列を格納
-            case PropertyKey.DATA_TYPE:
+            case RtmPropertyKey.DATA_TYPE:
                 port.setDataType(val);
                 break;
 
             // データフロータイプはカンマ区切りで要素を格納
-            case PropertyKey.DATAFLOW_TYPE:
+            case RtmPropertyKey.DATAFLOW_TYPE:
                 Set<String> dataFlowSet = new LinkedHashSet<>();
                 for (String type : val.split(",")) {
                     dataFlowSet.add(type.trim());
@@ -471,12 +466,12 @@ public class NamingServerDaoImpl implements NamingServerDao {
                 break;
 
             // インタフェースタイプは文字列を格納
-            case PropertyKey.INTERFACE_TYPE:
+            case RtmPropertyKey.INTERFACE_TYPE:
                 port.setInterfaceType(val);
                 break;
 
             // ポートタイプは"DataInPort"の場合にInPort指定する
-            case PropertyKey.PORT_TYPE:
+            case RtmPropertyKey.PORT_TYPE:
                 if (PORT_TYPE_IN.equals(val)) {
                     port.setIsInPort(true);
                 } else {
@@ -485,7 +480,7 @@ public class NamingServerDaoImpl implements NamingServerDao {
                 break;
 
             // サブスクリプションタイプはカンマ区切りで要素を格納
-            case PropertyKey.SUBSCRIPTION_TYPE:
+            case RtmPropertyKey.SUBSCRIPTION_TYPE:
                 Set<String> subTypeSet = new LinkedHashSet<>();
                 for (String type : val.split(",")) {
                     subTypeSet.add(type.trim());
@@ -542,22 +537,22 @@ public class NamingServerDaoImpl implements NamingServerDao {
 
                 switch(key) {
 
-                case PropertyKey.DATA_TYPE:
+                case RtmPropertyKey.DATA_TYPE:
                     val = nv.value.extract_string();
                     con.setDataType(val);
                     break;
 
-                case PropertyKey.DATAFLOW_TYPE:
+                case RtmPropertyKey.DATAFLOW_TYPE:
                     val = nv.value.extract_string();
                     con.setDataFlowType(val);
                     break;
 
-                case PropertyKey.INTERFACE_TYPE:
+                case RtmPropertyKey.INTERFACE_TYPE:
                     val = nv.value.extract_string();
                     con.setInterfaceType(val);
                     break;
 
-                case PropertyKey.SUBSCRIPTION_TYPE:
+                case RtmPropertyKey.SUBSCRIPTION_TYPE:
                     val = nv.value.extract_string();
                     con.setSubscriptionType(val);
                     break;
